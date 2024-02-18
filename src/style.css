@@ -1,0 +1,19 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif; 
+}
+
+.content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+nav {
+    border: 1px solid #000;
+}
+
+.main {
+    border: 1px solid #000;
+}
