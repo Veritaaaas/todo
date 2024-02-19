@@ -6,27 +6,42 @@
         <title>Todo List</title>
     </head>
     <body>
-        <header>
-            <h1>OnQueue</h1>
-        </header>
+        <div class="header">
+            <h1><i class="fa-solid fa-check-double"></i>On<span class="queue">Queue</span></h1>
+        </div>
         <div class="content">
             <div class="sidebar">
-                <nav>
-                    <ul>
-                        <li><button id="all">All Tasks</button></li>
-                        <li><button id="today">Today's Tasks</button></li>
-                        <li><button id="next-week">Next Week's Tasks</button></li>
+                <h2>Menu</h2>
+                <div class="menus">
+                    <button id="all"><img src="../src/images/mail.png">All Tasks</button>
+                    <button id="today"><img src="../src/images/calendar.png">Today's Tasks</button>
+                    <button id="next-week"><img src="../src/images/seven.png">Next Week's Tasks</button>
+                    <button id="important"><img src="../src/images/star.png">Important Tasks</button>
+                </div>
 
-                        <div class="projects">
-                            <h2>Projects</h2>
-                            <button id="add-project">Add Project</button>
+                <div class="projects">
+                    <h2>Projects</h2>
+                    <div class="projects-list">
+                        <div class="project">
+                            <p><i class="fa-solid fa-bars"></i>Project 1</p>
+                            <button class="settings"><i class="fa-solid fa-ellipsis-vertical"></i></button>
                         </div>
-                </nav>
+                    </div>
+                    <button id="add-project"><i class="fa-solid fa-plus"></i>Add Project</button>
+                </div>
             </div>
             <div class="main">
                 <h2>Tasks</h2>
+                <div class="task-list">
+                    <div class="task">
+                        <input type="checkbox"/>
+                        <p>Task 1</p>
+                        <button class="delete">Delete</button>
+                    </div>
+                </div>
             </div>
         </div>
-        <script src="/src/index.js"></script>
+        <script src="https://kit.fontawesome.com/6e2477efc3.js" crossorigin="anonymous"></script>
+        <script src="main.js"></script>
     </body>
 </html>
