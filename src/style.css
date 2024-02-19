@@ -104,6 +104,7 @@ body, html {
 
 .project {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     margin: 0.5rem;
@@ -157,6 +158,30 @@ body, html {
     margin: 0;
 }
 
+.btn-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.btn-container button{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 4rem;
+    height: 2rem;
+    margin-left: 2rem !important;
+    margin-right: 2rem !important;
+    border-radius: 25px;
+}
+
+.add {
+    background-color: #84fa96 !important;
+}
+
+.cancel {
+    background-color: #ff7f7f !important;
+}
 
 .main {
     background-color: #f4f4f4;
