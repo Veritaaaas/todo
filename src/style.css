@@ -1,7 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 body, html {
+    height: 100vh;
+    width: 100%;
     margin: 0;
     padding: 0;
     font-family: 'Roboto', sans-serif; 
+}
+
+.header {
+    height: 12%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0;
+    border-bottom: 5px solid #EB5F1E;
+    font-size: 1.5rem;
+}
+
+.queue {
+    color: #EB5F1E;
+}
+
+.header i {
+    color: #EB5F1E;
+    margin-right: 0.5rem;
+}
+
+.header h1 {
+    margin: 0;
 }
 
 .content {
@@ -10,10 +38,145 @@ body, html {
     grid-template-columns: 1fr 4fr;
 }
 
-nav {
-    border: 1px solid #000;
+.sidebar {
+    width: 100%;
+    padding-top: 0.5rem !important;
+    font-size: 1.2rem;
+} 
+
+.sidebar h2 {
+    margin-left: 0.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
 }
 
+.menus {
+    width: 100%;
+    margin-top: 0;
+    padding-top: 0.5rem;
+    border-top: 2px solid #EB5F1E;
+}
+
+.menus button{
+    width: 100%;
+    border: none;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    margin-top: 0;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 550;
+    margin-left: 0 !important;
+    margin: 1rem;
+    cursor: pointer; 
+}
+
+.menus button:hover {
+    background-color: #F08756;
+    border-left: 4px solid #EB5F1E;
+}
+
+.menus button.active {
+    background-color: #F08756;
+    border-left: 4px solid #EB5F1E;
+}
+
+.menus img {
+    width: 1.7rem;
+    height: 1.7rem;
+    margin-right: 0.5rem;
+}
+
+.projects {
+    width: 100%;
+    margin-top: 0;
+}
+
+.projects-list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 0;
+    padding-top: 0.5rem;
+    border-top: 2px solid #EB5F1E;
+}
+
+.project {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0.5rem;
+    cursor: pointer;
+}
+
+.project i {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    cursor: pointer;
+}
+
+.project button {
+    border: none;
+    background-color: transparent;
+    display: flex;
+    justify-content: end;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.project button i {
+    margin-right: 0;
+
+}
+
+.project:hover {
+    background-color: #F08756;
+    border-left: 4px solid #EB5F1E;
+}
+
+#add-project {
+    width: 100%;
+    border: none;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    font-size: 1rem;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 550;
+    cursor: pointer; 
+}
+
+#add-project:hover {
+    background-color: #F08756;
+    border-left: 4px solid #EB5F1E;
+}
+
+.project-name {
+    height: 1rem;
+    margin: 0;
+}
+
+
 .main {
-    border: 1px solid #000;
+    background-color: #f4f4f4;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.task-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.task {
+    width: 100%;
+    display: flex;
+    flex-direction: initial;
+    align-items: center;
 }
