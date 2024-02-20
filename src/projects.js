@@ -7,6 +7,10 @@ function projectAdd() {
     let btn_container = document.createElement('div');
     let add = document.createElement('button');
     let cancel = document.createElement('button');
+    let setting_modal = document.createElement('div');
+    let modal_menu = document.createElement('div');
+    let edit = document.createElement('button');
+    let del = document.createElement('button');
 
     p.innerHTML = '<i class="fa-solid fa-bars"></i>';
 
@@ -28,27 +32,42 @@ function projectAdd() {
     btn_container.appendChild(add);
     btn_container.appendChild(cancel);
 
+    edit.innerHTML = 'Edit';
+    edit.classList.add('edit');
+
+    del.innerHTML = 'Delete';
+    del.classList.add('delete');
+
+    setting_modal.classList.add('setting-modal');
+    modal_menu.classList.add('modal-menu');
+
+    modal_menu.appendChild(edit);
+    modal_menu.appendChild(del);
+
+    setting_modal.appendChild(modal_menu);
+
     project.classList.add('project');
     project.appendChild(p);
     project.appendChild(textField);
     project.appendChild(settings);
     project.appendChild(btn_container);
 
+    projectList.appendChild(setting_modal);
     projectList.appendChild(project);
 
     return function() {
-        return {p, textField, btn_container};
+        return {edit, del, setting_modal, settings, add, cancel, p, project, textField, btn_container};
     };
     
 }
 
 function projectAddConfirmation(getProjectElements) {
 
-    let add = document.querySelector('.add');
-    let cancel = document.querySelector('.cancel');
+    console.log("Project Add Confirmation")
+    
+    let {edit, del, setting_modal, settings, add, cancel, p, project, textField, btn_container} = getProjectElements();
 
     add.addEventListener('click', function() {
-        let {p, textField, btn_container} = getProjectElements();
 
         console.log(textField.value);
         p.innerHTML += textField.value;
@@ -60,10 +79,74 @@ function projectAddConfirmation(getProjectElements) {
     });
 
     cancel.addEventListener('click', function() {
-        let project = document.querySelector('.project');
         project.remove();
     });
 }
 
+function addSettings(getProjectElements){
+    
+    let {edit, del, setting_modal, settings, add, cancel, p, project, textField, btn_container} = getProjectElements();
 
-export { projectAdd, projectAddConfirmation };
+
+    settings.addEventListener('click', function() {
+        console.log('Settings Clicked');
+
+        if (setting_modal.style.display === 'flex') {
+            setting_modal.style.display = 'none';
+        } else {
+            setting_modal.style.display = 'flex';
+        }
+    });
+
+    edit.addEventListener('click', function() {
+        let confirm = document.createElement('button');
+        let cancel = document.createElement('button');
+        let btn_container = document.createElement('div');
+
+        confirm.classList.add('add');
+        confirm.innerHTML = 'Confirm';
+
+        cancel.classList.add('cancel');
+        cancel.innerHTML = 'Cancel';
+
+        btn_container.classList.add('btn-container');
+
+        let textField = document.createElement('input');
+        textField.value = p.textContent; 
+        textField.classList.add('project-name');
+
+        p.innerHTML = '<i class="fa-solid fa-bars"></i>';
+
+        p.appendChild(textField);
+
+        btn_container.appendChild(confirm);
+        btn_container.appendChild(cancel);
+
+        project.appendChild(btn_container);
+
+        setting_modal.style.display = 'none';
+
+        confirm.addEventListener('click', function() {
+            let textNode = document.createTextNode(textField.value);
+            p.appendChild(textNode);
+            p.removeChild(textField);
+            btn_container.remove();
+        });
+
+        cancel.addEventListener('click', function() {
+            let textNode = document.createTextNode(textField.value);
+            p.appendChild(textNode);
+            p.removeChild(textField); 
+            btn_container.remove();
+        });
+
+    });
+
+    del.addEventListener('click', function() {
+        project.remove();
+        setting_modal.style.display = 'none';
+    });
+}
+
+
+export { projectAdd, projectAddConfirmation, addSettings};

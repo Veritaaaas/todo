@@ -8,6 +8,11 @@ body, html {
     font-family: 'Roboto', sans-serif; 
 }
 
+button {
+    font-family: 'Roboto', sans-serif;
+
+}
+
 .header {
     height: 12%;
     width: 100%;
@@ -39,8 +44,8 @@ body, html {
 }
 
 .sidebar {
-    width: 100%;
     padding-top: 0.5rem !important;
+    padding: 1rem;
     font-size: 1.2rem;
 } 
 
@@ -103,6 +108,7 @@ body, html {
 }
 
 .project {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -132,7 +138,6 @@ body, html {
 }
 
 .project:hover {
-    background-color: #F08756;
     border-left: 4px solid #EB5F1E;
 }
 
@@ -181,6 +186,29 @@ body, html {
 
 .cancel {
     background-color: #ff7f7f !important;
+}
+
+.setting-modal {
+    display: none;
+    justify-content: end;
+    z-index: 100;
+}
+
+.modal-menu {
+    display: flex;
+    flex-direction: column;
+    background-color: #f4f4f4;
+}
+
+.modal-menu button {
+    font-size: 0.8rem;
+    font-weight: 600;
+    display: flex;
+    background-color: none;
+    text-align: left;
+    border: none;
+    margin: 0.5rem;
+    cursor: pointer;
 }
 
 .main {
