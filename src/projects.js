@@ -1,3 +1,13 @@
+function setActive(element) {
+
+    document.querySelectorAll('.menus button, .projects .project').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    element.classList.add('active');
+}
+
+
 function projectAdd() {
     let projectList = document.querySelector('.projects-list');
     let project = document.createElement('div');
@@ -53,14 +63,12 @@ function projectAdd() {
     project.appendChild(btn_container);
 
     project.addEventListener('click', function() {
-        
-        if (project.classList.contains('active') === false) {
-            project.classList.add('active');
-        }
-        else 
-        {
-            project.classList.remove('active');
-        }
+        const taskTitleElement = document.querySelector('.main-header h2');
+        setActive(project);
+
+        taskTitleElement.textContent = p.textContent;
+        let addTask = document.querySelector('#add-task');
+        addTask.style.display = 'flex';
     });
 
     projectList.appendChild(setting_modal);
@@ -160,4 +168,6 @@ function addSettings(getProjectElements){
 }
 
 
-export { projectAdd, projectAddConfirmation, addSettings};
+
+
+export { projectAdd, projectAddConfirmation, addSettings, setActive};

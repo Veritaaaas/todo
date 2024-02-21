@@ -1,8 +1,11 @@
 import './style.css';
-import { projectAdd, projectAddConfirmation, addSettings} from './projects.js';
+import { projectAdd, projectAddConfirmation, addSettings, setActive} from './projects.js';
 
 let addProject = document.querySelector('#add-project');
+const menus_btn = document.querySelectorAll('.menu-btn');
+const taskTitleElement = document.querySelector('.main-header h2');
 
+menus_btn[0].classList.add('active');
 
 addProject.addEventListener('click', function() {
     let getProjectElements = projectAdd();
@@ -11,3 +14,9 @@ addProject.addEventListener('click', function() {
 
 });
 
+menus_btn.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+        setActive(btn);
+        taskTitleElement.textContent = btn.textContent;
+    });
+});
