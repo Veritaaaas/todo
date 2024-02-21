@@ -52,6 +52,17 @@ function projectAdd() {
     project.appendChild(settings);
     project.appendChild(btn_container);
 
+    project.addEventListener('click', function() {
+        
+        if (project.classList.contains('active') === false) {
+            project.classList.add('active');
+        }
+        else 
+        {
+            project.classList.remove('active');
+        }
+    });
+
     projectList.appendChild(setting_modal);
     projectList.appendChild(project);
 

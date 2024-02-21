@@ -14,7 +14,7 @@ button {
 }
 
 .header {
-    height: 12%;
+    height: 12vh;
     width: 100%;
     display: flex;
     align-items: center;
@@ -139,6 +139,12 @@ button {
 
 .project:hover {
     border-left: 4px solid #EB5F1E;
+    background-color: #F08756;
+}
+
+.project.active {
+    border-left: 4px solid #EB5F1E;
+    background-color: #F08756;
 }
 
 #add-project {
@@ -211,25 +217,113 @@ button {
     cursor: pointer;
 }
 
+/* main content */
+
 .main {
     background-color: #f4f4f4;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 12vh - 5px - 6rem);
+    padding: 3rem;
 }
 
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
+.main-header {
+    width: calc(100% - 1rem);
+    display: flex;
+    height: 10vh;
+    background-color: #EB5F1E;
+    padding: 0.5rem;
+    font-size: 1.5rem;
+    align-items: center;
+    color: white;
 }
 
 .task-list {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    margin-top: 1rem;
     align-items: center;
 }
 
 .task {
-    width: 100%;
-    display: flex;
-    flex-direction: initial;
-    align-items: center;
+    padding-top: 0.5rem;
+    padding-right: 0.5rem;
+    width:  calc(100% - 0.5rem);
+    display: grid;
+    grid-template-columns:  1fr  25fr;
+    grid-template-rows:  0.fr  0.5fr;
+    grid-template-areas:
+        "checkbox header"
+        "checkbox description";
+    border:  1px solid black;
+    border-radius: 10px;
 }
+
+.checkbox {
+    grid-area: checkbox;
+    display: flex;
+    justify-content: center;
+    padding-top: 0.3rem;
+}
+
+.checkbox input[type="checkbox"] {
+    appearance: none;
+    border:  2px solid black;
+    border-radius:  50%;
+    position: relative;
+    width:  1.2rem;
+    height:  1.2rem;
+}
+
+.checkbox input[type="checkbox"]:checked:after {
+    content: '';
+    width:  12px;
+    height:  12px;
+    border-radius:  50%;
+    position: absolute;
+    top:  50%;
+    left:  50%;
+    background-color: #00a2e8;
+    transform: translate(-50%, -50%);
+}
+
+.task-header {
+    grid-area:header;
+    display: grid;
+    grid-template-columns: 6fr 1fr;
+    grid-template-areas: 
+        "title details";
+}
+
+.task-title {
+    grid-area: title;
+    font-size: 1rem;
+}
+
+.task-title h3 {
+    margin: 0;
+}
+
+.task-details {
+    grid-area: details;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+}
+
+.task-details p {
+    margin: 0;
+}
+
+.task-details img {
+    width: 1rem;
+    height: 1rem;
+    margin-right: 0.5rem;
+
+}
+
+.task-content {
+    grid-area: description;
+}
+
