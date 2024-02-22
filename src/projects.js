@@ -1,12 +1,13 @@
 function setActive(element) {
-
     document.querySelectorAll('.menus button, .projects .project').forEach(el => {
         el.classList.remove('active');
     });
-
     element.classList.add('active');
 }
 
+function saveProjectsToStorage(projects) {
+    localStorage.setItem('projects', JSON.stringify(projects));
+}
 
 function projectAdd() {
     let projectList = document.querySelector('.projects-list');
@@ -66,6 +67,7 @@ function projectAdd() {
         const taskTitleElement = document.querySelector('.main-header h2');
         setActive(project);
 
+        activeProject = project;
         taskTitleElement.textContent = p.textContent;
         let addTask = document.querySelector('#add-task');
         addTask.style.display = 'flex';
@@ -74,27 +76,76 @@ function projectAdd() {
     projectList.appendChild(setting_modal);
     projectList.appendChild(project);
 
-    return function() {
-        return {edit, del, setting_modal, settings, add, cancel, p, project, textField, btn_container};
-    };
-    
+    projectAddConfirmation(add, cancel, p, project, textField, btn_container);
+    addSettings(edit, del, setting_modal, settings, p, project);
 }
 
-function projectAddConfirmation(getProjectElements) {
+function loadProjects() {
+    const projects = JSON.parse(localStorage.getItem('projects')) || [];
 
-    console.log("Project Add Confirmation")
+    projects.forEach(project => {
+        let projectList = document.querySelector('.projects-list');
+        let projectElement = document.createElement('div');
+        let p = document.createElement('p');
+        let settings = document.createElement('button');
+        let setting_modal = document.createElement('div');
+        let modal_menu = document.createElement('div');
+        let edit = document.createElement('button');
+        let del = document.createElement('button');
+
+        p.innerHTML = '<i class="fa-solid fa-bars"></i>' + project.name;
+
+        settings.classList.add('settings');
+        settings.innerHTML = '<i class="fa-solid fa-ellipsis-vertical"></i>';
+
+        edit.innerHTML = 'Edit';
+        edit.classList.add('edit');
+
+        del.innerHTML = 'Delete';
+        del.classList.add('delete');
+
+        setting_modal.classList.add('setting-modal');
+        modal_menu.classList.add('modal-menu');
+
+        modal_menu.appendChild(edit);
+        modal_menu.appendChild(del);
+
+        setting_modal.appendChild(modal_menu);
+
+        projectElement.classList.add('project');
+        projectElement.appendChild(p);
+        projectElement.appendChild(settings);
+
+        projectList.appendChild(setting_modal);
+        projectList.appendChild(projectElement);
+
+        addSettings(edit, del, setting_modal, settings, p, projectElement);
+        
+        projectElement.addEventListener('click', function() {
+            const taskTitleElement = document.querySelector('.main-header h2');
+            setActive(projectElement);
     
-    let {edit, del, setting_modal, settings, add, cancel, p, project, textField, btn_container} = getProjectElements();
+            taskTitleElement.textContent = p.textContent;
+            let addTask = document.querySelector('#add-task');
+            addTask.style.display = 'flex';
+        });
+    });
+}
 
+function projectAddConfirmation(add, cancel, p, project, textField, btn_container) {
     add.addEventListener('click', function() {
+        const projects = JSON.parse(localStorage.getItem('projects')) || [];
+        const newProject = {
+            name: textField.value,
+            tasks: [],
+            active: false
+        };
+        projects.push(newProject);
+        saveProjectsToStorage(projects);
 
-        console.log(textField.value);
-        p.innerHTML += textField.value;
-
+        p.innerHTML += newProject.name;
         textField.remove();
         btn_container.remove();
-
-        console.log('Project Added');
     });
 
     cancel.addEventListener('click', function() {
@@ -102,14 +153,10 @@ function projectAddConfirmation(getProjectElements) {
     });
 }
 
-function addSettings(getProjectElements){
-    
-    let {edit, del, setting_modal, settings, add, cancel, p, project, textField, btn_container} = getProjectElements();
-
+function addSettings(edit, del, setting_modal, settings, p, project) {
+    const projectName = p.textContent;
 
     settings.addEventListener('click', function() {
-        console.log('Settings Clicked');
-
         if (setting_modal.style.display === 'flex') {
             setting_modal.style.display = 'none';
         } else {
@@ -131,7 +178,7 @@ function addSettings(getProjectElements){
         btn_container.classList.add('btn-container');
 
         let textField = document.createElement('input');
-        textField.value = p.textContent; 
+        textField.value = p.textContent;
         textField.classList.add('project-name');
 
         p.innerHTML = '<i class="fa-solid fa-bars"></i>';
@@ -146,28 +193,48 @@ function addSettings(getProjectElements){
         setting_modal.style.display = 'none';
 
         confirm.addEventListener('click', function() {
-            let textNode = document.createTextNode(textField.value);
-            p.appendChild(textNode);
+            const projects = JSON.parse(localStorage.getItem('projects')) || [];
+            console.log(projects);
+
+            const projectIndex = projects.findIndex(p1 => p1.name === projectName);
+            console.log(projectIndex);
+
+            if (projectIndex !== -1) {
+                projects[projectIndex].name = textField.value;
+                localStorage.setItem('projects', JSON.stringify(projects));
+            }
+
+            let newProject_name = textField.value;
             p.removeChild(textField);
+            p.innerHTML += newProject_name;
             btn_container.remove();
         });
 
         cancel.addEventListener('click', function() {
-            let textNode = document.createTextNode(textField.value);
-            p.appendChild(textNode);
-            p.removeChild(textField); 
+            p.removeChild(textField);
+            p.innerHTML += textField.value;
             btn_container.remove();
         });
 
     });
 
     del.addEventListener('click', function() {
+        const projects = JSON.parse(localStorage.getItem('projects')) || [];
+        console.log(p.textContent);
+
+        const projectIndex = projects.findIndex(p1 => p1.name === p.textContent);
+        console.log(projectIndex);
+
+        if (projectIndex !== -1) {
+            projects.splice(projectIndex,  1);
+
+            localStorage.setItem('projects', JSON.stringify(projects));
+        }
+
         project.remove();
         setting_modal.style.display = 'none';
+
     });
 }
 
-
-
-
-export { projectAdd, projectAddConfirmation, addSettings, setActive};
+export { projectAdd, projectAddConfirmation, addSettings, setActive, loadProjects };

@@ -1,24 +1,13 @@
 import './style.css';
-import { projectAdd, projectAddConfirmation, addSettings, setActive} from './projects.js';
-import { addTask } from './tasks.js';
+import { loadProjects, addProject, addTask, loadTasks } from './DOM_manipulation.js';
 
-let addProject = document.querySelector('#add-project');
-const menus_btn = document.querySelectorAll('.menu-btn');
-const taskTitleElement = document.querySelector('.main-header h2');
+loadProjects();
 
-menus_btn[0].classList.add('active');
+const addProjectBtn = document.querySelector('#add-project');
+const add_task = document.querySelector('#add-task');
 
-addProject.addEventListener('click', function() {
-    let getProjectElements = projectAdd();
-    projectAddConfirmation(getProjectElements);
-    addSettings(getProjectElements);
-});
-
-menus_btn.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-        setActive(btn);
-        taskTitleElement.textContent = btn.textContent;
-    });
+addProjectBtn.addEventListener('click', function() {
+    addProject();
 });
 
 addTask();

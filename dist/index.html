@@ -31,43 +31,26 @@
                     <h2>All Tasks</h2>
                 </div>
                 <div class="task-list">
-                    <div class="task">
-                        <div class="checkbox">
-                            <input type="checkbox"/>
-                        </div>
-                        <div class="task-header">
-                            <div class="task-title">
-                                <h3>Task Title</h3>
-                            </div>
-                            <div class="task-details">
-                                <p>2024-01-02</p>
-                                <img src="../src/images/black-star.png" class="task-star"/>
-                                <i class="fa-solid fa-ellipsis-v"></i>
-                            </div>
-                        </div>
-                        <div class="task-content">
-                            content
-                        </div>
-                    </div>
                     <div id="add-task-modal">
                         <div class="modal-title">
                             <h3>Title:</h3>
-                            <input type="text" id="task-title" placeholder="What to do?"/>
+                            <input type="text" id="title-task" placeholder="What to do?"/>
                         </div>
                         <div class="modal-content">
                             <h3>Details:</h3>
-                            <input type="text" id="task-content" placeholder="Details of the task">                  
+                            <input type="text" id="content-task" placeholder="Details of the task">                  
                         </div>
                         <div class="modal-date">
                             <h3>Due Date:</h3>
-                            <input type="date" id="task-date"/>
+                            <input type="date" id="date-task"/>
                         </div>
                         <div class="task-btn">
                             <button id="add-task-btn">Add Task</button>
                             <button id="cancel-task-btn">Cancel</button>
                         </div>
                     </div>
-                <button id="add-task"><i class="fa-solid fa-plus"></i>Add Task</button>
+                    <button id="add-task"><i class="fa-solid fa-plus"></i>Add Task</button>
+                </div>
             </div>
         </div>
         <script src="https://kit.fontawesome.com/6e2477efc3.js" crossorigin="anonymous"></script>
