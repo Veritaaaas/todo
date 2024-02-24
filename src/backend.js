@@ -27,15 +27,15 @@ function loadTasksStorage() {
 
 
 function addTaskToProject(title, content, date) {
-    const projects = JSON.parse(localStorage.getItem('projects')) || [];
-    const activeProject = projects.find((project) => project.active === true);
+    let projects = loadProjectsStorage();
+    let activeProject = projects.find((project) => project.active === true);
 
-    console.log(activeProject);
     const newTask = {
         title,
         content,
         date,
         done: false,
+        priority: false
     };
     activeProject.tasks.push(newTask);
     localStorage.setItem('projects', JSON.stringify(projects));

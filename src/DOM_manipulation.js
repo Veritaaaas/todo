@@ -210,10 +210,10 @@ function addSettings(edit, del, setting_modal, settings, p, project) {
 
 
 function setActiveDOM(project, projectElement, p) {
-    let projects = loadProjectsStorage();
-
 
     projectElement.addEventListener('click', function() {
+        let projects = loadProjectsStorage();
+
         document.querySelectorAll('.menus button, .projects .project').forEach(el => {
             el.classList.remove('active');
         });
@@ -232,7 +232,7 @@ function setActiveDOM(project, projectElement, p) {
                 pr.active = false;
             }
         });
-    
+        
         localStorage.setItem('projects', JSON.stringify(projects));
         loadTasks();
     });
@@ -249,11 +249,13 @@ function clearTasks() {
 
 function loadTasks() {
     clearTasks();
-    const tasks = loadTasksStorage();
-    console.log(tasks)
+    const projects = loadProjectsStorage();
+    const activeProject = projects.find(project => project.active);
+    const tasks = activeProject.tasks;
+
+    console.log(projects); 
 
     tasks.forEach(task => {
-        console.log(task.title, task.content, task.date);
 
         const addTaskModal = document.querySelector('#add-task-modal');
         let taskElement = document.createElement('div');
@@ -278,7 +280,16 @@ function loadTasks() {
         taskDetails.classList.add('task-details');
 
         checkboxInput.type = 'checkbox';
-        star.src = '../src/images/black-star.png';
+
+        if (task.priority === true)
+        {
+            star.src = '../src/images/star.png';
+        }
+        else
+        {
+            star.src = '../src/images/black-star.png';
+        }
+
         setting.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
 
         checkbox.appendChild(checkboxInput);
@@ -301,6 +312,9 @@ function loadTasks() {
         taskElement.appendChild(taskContent);
 
         addTaskModal.parentNode.insertBefore(taskElement, addTaskModal);
+        taskFinished(task.title, checkboxInput, taskElement);
+        addPriority(task.title, star);
+        addDelete(task.title, setting, taskElement); 
     });
 }
 
@@ -369,6 +383,9 @@ function addTask() {
 
         addTaskToProject(title.value, content.value, date.value);
         resetModal(title, content, date, addTaskModal);
+        taskFinished(title.value, checkboxInput, taskElement);
+        addPriority(title.value, star);
+        addDelete(title.value, setting);
     });
 
     cancel.addEventListener('click', function() {
@@ -385,4 +402,137 @@ function resetModal(title, content, date, addTaskModal) {
 
 }
 
-export { loadProjects, addProject, addTask, loadTasks};
+function addDelete(title, setting, taskElement) {
+    setting.addEventListener('click', function() {
+        let projects = loadProjectsStorage();
+        let activeProject = projects.find((project) => project.active === true);
+        let tasks = activeProject.tasks;
+        const taskIndex = tasks.findIndex(task => task.title === title);
+
+
+        console.log(taskElement);
+        if (taskElement) {
+            taskElement.style.textDecoration = 'line-through'; 
+        }
+
+        if (taskIndex !== -1) {
+            tasks.splice(taskIndex, 1);
+            localStorage.setItem('projects', JSON.stringify(projects));
+        }
+    });
+
+}
+
+function taskFinished(title, checkboxInput, taskElement) {
+    checkboxInput.addEventListener('change', function() {
+        let projects = loadProjectsStorage();
+        let activeProject = projects.find((project) => project.active === true);
+        let tasks = activeProject.tasks;
+        const taskIndex = tasks.findIndex(task => task.title === title);
+
+        if (checkboxInput.checked) {
+            taskElement.style.textDecoration = 'line-through';
+            if (taskIndex !== -1) {
+                tasks.splice(taskIndex, 1);
+                localStorage.setItem('projects', JSON.stringify(projects));
+            }
+        }
+    });
+}
+
+function addPriority(title, star) {
+    star.addEventListener('click', function() {
+        let projects = loadProjectsStorage();
+        let activeProject = projects.find((project) => project.active === true);
+        let tasks = activeProject.tasks;
+        let task = tasks.find((task) => task.title === title);
+        console.log(star.src)
+
+        if (star.src === 'http://127.0.0.1:5500/todo/src/images/black-star.png')
+        {
+            console.log('Priority');
+            task.priority = true;
+            star.src = '../src/images/star.png'
+        }
+        else
+        {
+            console.log('Not Priority');
+            task.priority = false;
+            star.src = '../src/images/black-star.png'
+        }
+
+        localStorage.setItem('projects', JSON.stringify(projects));
+    });
+}
+
+function loadPriority() {
+    clearTasks();
+    const projects = loadProjectsStorage();
+
+    projects.forEach(project => {
+        project.tasks.forEach(task => {
+            if (task.priority === true)
+            {
+                const addTaskModal = document.querySelector('#add-task-modal');
+                let taskElement = document.createElement('div');
+                let checkbox = document.createElement('div');
+                let taskHeader = document.createElement('div');
+                let taskContent = document.createElement('div');
+                
+                let checkboxInput = document.createElement('input');
+                let taskTitle = document.createElement('div');
+                let taskDetails = document.createElement('div');
+                let taskTitleText = document.createElement('h3');
+                let task_date = document.createElement('p');
+                let star = document.createElement('img');
+                let setting = document.createElement('i');
+
+                taskElement.classList.add('task');
+                checkbox.classList.add('checkbox');
+                taskHeader.classList.add('task-header');
+                taskContent.classList.add('task-content');
+
+                taskTitle.classList.add('task-title');
+                taskDetails.classList.add('task-details');
+
+                checkboxInput.type = 'checkbox';
+
+                if (task.priority === true)
+                {
+                    star.src = '../src/images/star.png';
+                }
+                else
+                {
+                    star.src = '../src/images/black-star.png';
+                }
+
+                setting.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+
+                checkbox.appendChild(checkboxInput);
+
+                taskTitleText.textContent = task.title;
+                taskTitle.appendChild(taskTitleText);
+
+                task_date.textContent = task.date;
+                taskDetails.appendChild(task_date);
+                taskDetails.appendChild(star);
+                taskDetails.appendChild(setting);
+                
+                taskHeader.appendChild(taskTitle);
+                taskHeader.appendChild(taskDetails);
+
+                taskContent.textContent = task.content;
+                
+                taskElement.appendChild(checkbox);
+                taskElement.appendChild(taskHeader);
+                taskElement.appendChild(taskContent);
+
+                addTaskModal.parentNode.insertBefore(taskElement, addTaskModal);
+                addPriority(task.title, star);
+                addDelete(task.title, setting);  
+            }
+        });
+    });
+}
+
+export { loadProjects, addProject, addTask, loadTasks, loadPriority};
