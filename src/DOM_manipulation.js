@@ -563,6 +563,24 @@ function loadToday() {
     });
 }
 
+function loadNextWeek() {
+    clearTasks();
+    const projects = JSON.parse(localStorage.getItem('projects')) || [];
+    const activeProject = projects.find((project) => project.active === true);
+
+    const today = new Date();
+    const tasks = activeProject.tasks;
+
+    tasks.forEach(task => {
+        let task_date = new Date(task.date);
+        if (task_date.getDate() >= today.getDate() && task_date.getDate() <= today.getDate() + 7 && task_date.getMonth() === today.getMonth() && task_date.getFullYear() === today.getFullYear())
+        {
+            createTaskElement(task);
+            console.log(task_date.getDate());
+        }
+    });
+}
+
 function loadPriority() {
     clearTasks();
     const projects = loadProjectsStorage();
@@ -578,4 +596,4 @@ function loadPriority() {
 }
 
 
-export { loadProjects, addProject, addTask, loadTasks, loadPriority, loadAllTasks, loadToday};
+export { loadProjects, addProject, addTask, loadTasks, loadPriority, loadAllTasks, loadToday, loadNextWeek};

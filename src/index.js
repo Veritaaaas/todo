@@ -1,11 +1,12 @@
 import './style.css';
-import { loadProjects, addProject, addTask, loadPriority, loadAllTasks, loadToday } from './DOM_manipulation.js';
+import { loadProjects, addProject, addTask, loadPriority, loadAllTasks, loadToday, loadNextWeek } from './DOM_manipulation.js';
 
 loadProjects();
 
 const addProjectBtn = document.querySelector('#add-project');
 const all = document.querySelector('#all');
 const today = document.querySelector('#today');
+const next_week = document.querySelector('#next-week');
 const important = document.querySelector('#important');
 
 addProjectBtn.addEventListener('click', function() {
@@ -35,6 +36,19 @@ today.addEventListener('click', function() {
     today.classList.add('active');
     const taskTitleElement = document.querySelector('.main-header h2');
     taskTitleElement.textContent = today.textContent;
+
+    let addTask = document.querySelector('#add-task');
+    addTask.style.display = 'none';
+});
+
+next_week.addEventListener('click', function() {
+    loadNextWeek();
+    document.querySelectorAll('.menus button, .projects .project').forEach(el => {
+        el.classList.remove('active');
+    });
+    next_week.classList.add('active');
+    const taskTitleElement = document.querySelector('.main-header h2');
+    taskTitleElement.textContent = next_week.textContent;
 
     let addTask = document.querySelector('#add-task');
     addTask.style.display = 'none';
