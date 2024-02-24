@@ -1,4 +1,4 @@
-import { loadProjectsStorage, addProjectStorage, addTaskToProject, loadTasksStorage } from "./backend.js";
+import { loadProjectsStorage, addProjectStorage, addTaskToProject} from "./backend.js";
 
 //for projects
 
@@ -240,12 +240,75 @@ function setActiveDOM(project, projectElement, p) {
 
 // for tasks
 
+function createTaskElement(task) {
+    const addTaskModal = document.querySelector('#add-task-modal');
+            let taskElement = document.createElement('div');
+            let checkbox = document.createElement('div');
+            let taskHeader = document.createElement('div');
+            let taskContent = document.createElement('div');
+            
+            let checkboxInput = document.createElement('input');
+            let taskTitle = document.createElement('div');
+            let taskDetails = document.createElement('div');
+            let taskTitleText = document.createElement('h3');
+            let task_date = document.createElement('p');
+            let star = document.createElement('img');
+            let setting = document.createElement('i');
+
+            taskElement.classList.add('task');
+            checkbox.classList.add('checkbox');
+            taskHeader.classList.add('task-header');
+            taskContent.classList.add('task-content');
+
+            taskTitle.classList.add('task-title');
+            taskDetails.classList.add('task-details');
+
+            checkboxInput.type = 'checkbox';
+
+            if (task.priority === true)
+            {
+                star.src = '../src/images/star.png';
+            }
+            else
+            {
+                star.src = '../src/images/black-star.png';
+            }
+
+            setting.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
+
+            checkbox.appendChild(checkboxInput);
+
+            taskTitleText.textContent = task.title;
+            taskTitle.appendChild(taskTitleText);
+
+            task_date.textContent = task.date;
+            taskDetails.appendChild(task_date);
+            taskDetails.appendChild(star);
+            taskDetails.appendChild(setting);
+            
+            taskHeader.appendChild(taskTitle);
+            taskHeader.appendChild(taskDetails);
+
+            taskContent.textContent = task.content;
+            
+            taskElement.appendChild(checkbox);
+            taskElement.appendChild(taskHeader);
+            taskElement.appendChild(taskContent);
+
+            addTaskModal.parentNode.insertBefore(taskElement, addTaskModal);
+            taskFinished(task.title, checkboxInput, taskElement);
+            addPriority(task.title, star);
+            addDelete(task.title, setting, taskElement);
+}
+
+
 function clearTasks() {
     const tasks = document.querySelectorAll('.task');
     tasks.forEach(task => {
         task.remove();
     });
 }
+
 
 function loadTasks() {
     clearTasks();
@@ -317,6 +380,7 @@ function loadTasks() {
         addDelete(task.title, setting, taskElement); 
     });
 }
+
 
 function addTask() {
     const addTask = document.querySelector('#add-task');
@@ -394,6 +458,7 @@ function addTask() {
     });
 }
 
+
 function resetModal(title, content, date, addTaskModal) {
     title.value = '';
     content.value = '';
@@ -401,6 +466,7 @@ function resetModal(title, content, date, addTaskModal) {
     addTaskModal.style.display = 'none';
 
 }
+
 
 function addDelete(title, setting, taskElement) {
     setting.addEventListener('click', function() {
@@ -423,6 +489,7 @@ function addDelete(title, setting, taskElement) {
 
 }
 
+
 function taskFinished(title, checkboxInput, taskElement) {
     checkboxInput.addEventListener('change', function() {
         let projects = loadProjectsStorage();
@@ -439,6 +506,7 @@ function taskFinished(title, checkboxInput, taskElement) {
         }
     });
 }
+
 
 function addPriority(title, star) {
     star.addEventListener('click', function() {
@@ -465,6 +533,36 @@ function addPriority(title, star) {
     });
 }
 
+
+function loadAllTasks() {
+    clearTasks();
+    const projects = loadProjectsStorage();
+    
+    projects.forEach(project => {
+        project.tasks.forEach(task => {
+            createTaskElement(task);
+        });  
+    });
+}
+
+function loadToday() {
+    clearTasks();
+    const projects = JSON.parse(localStorage.getItem('projects')) || [];
+    const activeProject = projects.find((project) => project.active === true);
+
+    const today = new Date();
+    const tasks = activeProject.tasks;
+
+    tasks.forEach(task => {
+        let task_date = new Date(task.date);
+        if (task_date.getDate() === today.getDate() && task_date.getMonth() === today.getMonth() && task_date.getFullYear() === today.getFullYear())
+        {
+            createTaskElement(task);
+            console.log(task_date.getDate());
+        }
+    });
+}
+
 function loadPriority() {
     clearTasks();
     const projects = loadProjectsStorage();
@@ -473,66 +571,11 @@ function loadPriority() {
         project.tasks.forEach(task => {
             if (task.priority === true)
             {
-                const addTaskModal = document.querySelector('#add-task-modal');
-                let taskElement = document.createElement('div');
-                let checkbox = document.createElement('div');
-                let taskHeader = document.createElement('div');
-                let taskContent = document.createElement('div');
-                
-                let checkboxInput = document.createElement('input');
-                let taskTitle = document.createElement('div');
-                let taskDetails = document.createElement('div');
-                let taskTitleText = document.createElement('h3');
-                let task_date = document.createElement('p');
-                let star = document.createElement('img');
-                let setting = document.createElement('i');
-
-                taskElement.classList.add('task');
-                checkbox.classList.add('checkbox');
-                taskHeader.classList.add('task-header');
-                taskContent.classList.add('task-content');
-
-                taskTitle.classList.add('task-title');
-                taskDetails.classList.add('task-details');
-
-                checkboxInput.type = 'checkbox';
-
-                if (task.priority === true)
-                {
-                    star.src = '../src/images/star.png';
-                }
-                else
-                {
-                    star.src = '../src/images/black-star.png';
-                }
-
-                setting.innerHTML = '<i class="fa-solid fa-trash-can"></i>';
-
-                checkbox.appendChild(checkboxInput);
-
-                taskTitleText.textContent = task.title;
-                taskTitle.appendChild(taskTitleText);
-
-                task_date.textContent = task.date;
-                taskDetails.appendChild(task_date);
-                taskDetails.appendChild(star);
-                taskDetails.appendChild(setting);
-                
-                taskHeader.appendChild(taskTitle);
-                taskHeader.appendChild(taskDetails);
-
-                taskContent.textContent = task.content;
-                
-                taskElement.appendChild(checkbox);
-                taskElement.appendChild(taskHeader);
-                taskElement.appendChild(taskContent);
-
-                addTaskModal.parentNode.insertBefore(taskElement, addTaskModal);
-                addPriority(task.title, star);
-                addDelete(task.title, setting);  
+                createTaskElement(task);
             }
         });
     });
 }
 
-export { loadProjects, addProject, addTask, loadTasks, loadPriority};
+
+export { loadProjects, addProject, addTask, loadTasks, loadPriority, loadAllTasks, loadToday};

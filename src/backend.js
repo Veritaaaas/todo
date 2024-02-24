@@ -41,6 +41,8 @@ function addTaskToProject(title, content, date) {
     localStorage.setItem('projects', JSON.stringify(projects));
 }
 
-export { loadProjectsStorage, addProjectStorage, addTaskToProject, loadTasksStorage };
+
+
+export { loadProjectsStorage, addProjectStorage, addTaskToProject, loadTasksStorage};
 
     
